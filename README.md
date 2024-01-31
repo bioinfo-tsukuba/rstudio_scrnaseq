@@ -1,10 +1,11 @@
 # rstudio_scrnaseq
 
-## Docker の簡単な使い方
+## scRNA-seq 解析 Rstudio server Docker の簡単な使い方
 
-以下のコマンドを好きな場所で実行するだけでコンテナを起動することができる。
-docker image がダウンロードされていない場合は、ダウンロードから実行される。
-ダウンロードが正常に終了すると、コンテナが起動する。
+### コンテナの起動
+以下のコマンドを好きな場所で実行するだけでコンテナを起動することができる。  
+docker image がダウンロードされていない場合は、ダウンロードから実行される。  
+ダウンロードが正常に終了すると、コンテナが起動する。  
 
 ```bash
 docker run --name acctest -dit \                  # acctestはコンテナの名前なので自分で名前を付ける
@@ -16,12 +17,14 @@ docker run --name acctest -dit \                  # acctestはコンテナの名
 hway/rstudio_scrnaseq                             # 使用したいdocker image を記載する (M1/M2 Mac上でコンテナを起動して使用する場合は、hway/rstudio_scrnaseq_arm64を指定する)
 ```
 
-
+### scRNA-seq 解析 Rstudio server へのアクセス
 エラーなくコンテナが起動したらブラウザで以下にアクセスする。
-ローカルPCでコンテナを起動した場合
-http://localhost:8787/
+
+ローカルPCでコンテナを起動した場合  
+```http://localhost:8787/```
+
 リモートサーバ等でコンテナを起動した場合
-http://138.22.8.8:8787/ (138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください)
+http://138.22.8.8:8787/ #  (138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください)
 Rstudio server のログイン画面が表示される。
 
 以下を入力しRstudio server にログインする。
