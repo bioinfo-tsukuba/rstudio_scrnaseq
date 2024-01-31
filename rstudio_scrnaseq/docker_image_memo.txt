@@ -1,0 +1,81 @@
+
+# /etc/ld.so.confの設定
+## dockerコンテナ内ではエディタが使えないことが多いので以下のような方法をとる
+
+## ld.so.confをdockerホストのカレントディレクトリに移動
+docker cp [container]:/etc/ld.so.conf .
+
+## dockerホストのエディタでld.so.confを編集
+include /etc/ld.so.conf.d/*.conf
+/usr/local/lib #←追記
+
+
+# bluster installのため
+sudo apt-get update
+sudo apt-get install libglpk40 -y
+
+# scRNAseq installのため
+sudo apt-get install libbz2-dev -y
+sudo apt-get install liblzma-dev -y
+
+
+# hdf5rを使用するために必要なlinux packages
+sudo apt-get install libhdf5-dev
+sudo apt-get install libhdf5-serial-dev
+
+# 以下保留
+# sudo apt-get install libcblas-dev
+# sudo apt-get install libatlas-base-dev
+# sudo apt-get install libjasper-dev 
+# sudo apt-get install libqtgui4 
+# sudo apt-get install libqt4-test
+
+
+rocker/tidyverse:4.3.2 (clusterprofiler対策) ベースでdocker imageを作成
+
+グラフィカルなことをやろうとすると警告出る（これまで特別に問題がある感じしないけどここで整備）
+	libXt.so.6	# グラフィカルなことをやろうとすると警告出る
+	&& sudo apt-get install -y libxt6 をDockerfileに追加
+	→経過観察
+
+Azimuth
+	libgsl-dev # TFBSTOOLsをインストールするのに必要
+	libgsl-dev入れたらTFBSTOOLsインストールできた
+	TFBSTOOLsいれたらAzimuthインストールできた
+	&& sudo apt-get install -y libgsl-dev をDockerfileに追加
+	https://github.com/andigoni/MeinteR/issues/3
+
+scSHC
+	scryに依存していた
+	scryをbcインストールしたらscSHCインストールできた
+	→scryをpackage_list.txtに追加
+
+SCENIC
+	RcisTarget
+		RcisTargetをgithubから直接インストールしたらSCENICもインストールできた
+		remotes::install_github("aertslab/RcisTarget") myscript.Rに追加
+	
+	rbokeh
+		bcからインストールできなかったのでgithubからインストール
+		# from github:
+		remotes::install_github("bokeh/rbokeh") myscript.Rに追加
+		# library(rbokeh) # scenic依存
+
+MultiK
+	sigclust
+	# install.packages("sigclust") # MultiK自体のインストールには必要ない package_list.txtでsigclust小文字に変更
+	https://github.com/siyao-liu/MultiK
+	
+MuDataSeurat（忘れてた）
+	remotes::install_github("pmbio/MuDataSeurat") # myscript.Rに追加
+	library(MuDataSeurat)
+	https://pmbio.github.io/MuDataSeurat/index.html
+
+Monocle3
+	terraが原因でインストールできない。以下でクリア
+	terraが以下のファイルがないとエラーはlibrary読み込みできない
+		libproj.so.22 # terra
+		libgdal.so.30 # terra
+	Dockerfileに以下を追加
+		&& sudo apt-get install libproj-dev -y \
+		&& sudo apt-get install libgdal-dev -y 
