@@ -20,26 +20,40 @@ hway/rstudio_scrnaseq                             # 使用したいdocker image 
 ### scRNA-seq 解析 Rstudio server へのアクセス
 エラーなくコンテナが起動したらブラウザで以下にアクセスする。
 
-ローカルPCでコンテナを起動した場合  
-```http://localhost:8787/```
+* ローカルPCでコンテナを起動した場合  
 
-リモートサーバ等でコンテナを起動した場合
-http://138.22.8.8:8787/ #  (138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください)
+```http://localhost:8787/```  
+
+* リモートサーバ等でコンテナを起動した場合  
+
+```http://138.22.8.8:8787/ #  (138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください)```  
+
 Rstudio server のログイン画面が表示される。
 
 以下を入力しRstudio server にログインする。
+
+```
 username: rstudio
 password: testpass # 上記の docker run コマンドを実行した場合
+```
+
 R studio が使える状態になりました。
 
-その他の docker 操作
-コンテナが起動状況を確認したい場合
+### その他の docker 操作
+
+* コンテナが起動状況を確認したい場合
+
+```bash
 docker ps -a
-acctestという名前で起動した場合
+```
 acctest UP と表示されるはず。
 
 
-起動しているコンテナを削除したい場合
+* 起動しているコンテナを削除したい場合
+
+```bash
 docker stop acctest      # 起動中のコンテナの停止
 docker rm acctest        # コンテナの削除
+```
+
 
