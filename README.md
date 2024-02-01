@@ -8,25 +8,38 @@ docker image がダウンロードされていない場合は、ダウンロー�
 ダウンロードが正常に終了すると、コンテナが起動する。  
 
 ```bash
-docker run --name acctest -dit \                  # acctestはコンテナの名前なので自分で名前を付ける
---mount type=bind,src=$PWD,dst=/home/rstudio \    # ホストとコンテナのどの部分を共有するかの設定 このコマンドを実行したディレクトリ($PWD)以下がコンテナの/home/rstudio以下と同一視される
--e USERID=$(id -u) \                              # ホストとコンテナでのユーザを同一にする設定
--e GROUPID=$(id -g) \                             # ホストとコンテナでのユーザを同一にする設定
--e PASSWORD="testpass" \                          # "testpass"は任意なので自分でパスワードを設定する
--p 8787:8787 \                                    # ポートの設定は自由に変更可能 (-p ホストのポート:コンテナポート)
-hway/rstudio_scrnaseq                             # 使用したいdocker image を記載する (M1/M2 Mac上でコンテナを起動して使用する場合は、hway/rstudio_scrnaseq_arm64を指定する)
+docker run --rm --name acctest -dit \
+--mount type=bind,src=$PWD,dst=/home/rstudio \
+-e USERID=$(id -u) \
+-e GROUPID=$(id -g) \
+-e PASSWORD="testpass" \
+-p 8787:8787 \
+hway/rstudio_scrnaseq
 ```
+
+### docker run のオプションの説明とカスタマイズのヒント
+
+- `--name acctest`: acctestはコンテナの名前なので自分で名前を付ける
+- `--mount type=bind,src=$PWD,dst=/home/rstudio`: ホストとコンテナのどの部分を共有するかの設定 このコマンドを実行したディレクトリ($PWD)以下がコンテナの/home/rstudio以下と同一視される
+- `-e USERID=$(id -u)`: ホストとコンテナでのユーザを同一にする設定
+- `-e GROUPID=$(id -g)`: ホストとコンテナでのユーザを同一にする設定
+- `-e PASSWORD="testpass"`: "testpass"は任意なので自分でパスワードを設定する
+- `-p 8787:8787`: ポートの設定は自由に変更可能 (-p ホストのポート:コンテナポート)
+- `hway/rstudio_scrnaseq`: 使用したいdocker image を記載する (M1/M2 Mac上でコンテナを起動して使用する場合は、 `hway/rstudio_scrnaseq_arm64` を指定する)
+
 
 ### scRNA-seq 解析 Rstudio server へのアクセス
 エラーなくコンテナが起動したらブラウザで以下にアクセスする。
 
-* ローカルPCでコンテナを起動した場合  
+- ローカルPCでコンテナを起動した場合  
 
 ```http://localhost:8787/```  
 
-* リモートサーバ等でコンテナを起動した場合  
+- リモートサーバ等でコンテナを起動した場合  
 
-```http://138.22.8.8:8787/ #  (138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください)```  
+```http://138.22.8.8:8787/```  
+
+138.22.8.8の部分は使用するサーバーのIPアドレスで置き換えてください。  
 
 Rstudio server のログイン画面が表示される。
 
@@ -37,7 +50,7 @@ username: rstudio
 password: testpass # 上記の docker run コマンドを実行した場合
 ```
 
-R studio が使える状態になりました。
+R studio が使える状態になりました。  
 
 ### その他の docker 操作
 
@@ -53,7 +66,6 @@ acctest UP と表示されるはず。
 
 ```bash
 docker stop acctest      # 起動中のコンテナの停止
-docker rm acctest        # コンテナの削除
 ```
 
 
