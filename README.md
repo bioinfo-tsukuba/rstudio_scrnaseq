@@ -20,12 +20,12 @@ hway/rstudio_scrnaseq
 ### docker run のオプションの説明とカスタマイズのヒント
 
 - `--name acctest`: acctestはコンテナの名前なので自分で名前を付ける
-- `--mount type=bind,src=$PWD,dst=/home/rstudio`: ホストとコンテナのどの部分を共有するかの設定 このコマンドを実行したディレクトリ($PWD)以下がコンテナの/home/rstudio以下と同一視される
+- `--mount type=bind,src=$PWD,dst=/home/rstudio`: ホストとコンテナのどの部分を共有するかの設定 このコマンドを実行したディレクトリ(`$PWD`)以下がコンテナの`/home/rstudio`以下と同一視される
 - `-e USERID=$(id -u)`: ホストとコンテナでのユーザを同一にする設定
 - `-e GROUPID=$(id -g)`: ホストとコンテナでのユーザを同一にする設定
-- `-e PASSWORD="testpass"`: "testpass"は任意なので自分でパスワードを設定する
+- `-e PASSWORD="testpass"`: "testpass" は任意なので自分でパスワードを設定する
 - `-p 8787:8787`: ポートの設定は自由に変更可能 (-p ホストのポート:コンテナポート)
-- `hway/rstudio_scrnaseq`: 使用したいdocker image を記載する (M1/M2 Mac上でコンテナを起動して使用する場合は、 `hway/rstudio_scrnaseq_arm64` を指定する)
+- `hway/rstudio_scrnaseq`: 使用したい docker image を記載する (M1/M2 Mac上でコンテナを起動して使用する場合は、 `hway/rstudio_scrnaseq_arm64` を指定する)
 
 
 ### scRNA-seq 解析 Rstudio server へのアクセス
@@ -59,7 +59,7 @@ R studio が使える状態になりました。
 ```bash
 docker ps -a
 ```
-acctest UP と表示されるはず。
+起動していれば、acctest UP と表示されるはず。
 
 
 * 起動しているコンテナを削除したい場合
