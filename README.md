@@ -88,3 +88,62 @@ docker stop acctest      # 起動中のコンテナの停止
 ```
 
 
+### RStudio Server マルチユーザー設定
+
+このドキュメントでは、Docker コンテナ内で RStudio Server をマルチユーザー環境で利用するための設定手順を説明します。
+
+#### 前提条件
+- ホストマシンに Docker がインストールされていること
+- RStudio Server のコンテナが稼働していること
+- ユーザー情報がリスト化されていること
+
+#### マルチユーザーの追加手順
+
+##### 1. 実行中のコンテナにアクセス
+まず、以下のコマンドを使用して RStudio Server コンテナに入ります。
+
+```sh
+docker exec -it scrnaseq_handson /bin/bash
+```
+
+##### 2. コンテナ内でユーザーを追加
+コンテナ内で、以下のコマンドを実行して、事前に用意したユーザーリストからユーザーを作成します。
+
+```sh
+newusers /home/rstudio/env/user_list.txt
+```
+
+**注意:** `user_list.txt` の保存場所は、コンテナ内の任意のディレクトリで問題ありません。
+
+##### 3. コンテナから退出
+ユーザー作成コマンドの実行後、コンテナからホストへ戻ります。
+
+```sh
+exit
+```
+
+#### ユーザーリストのフォーマット
+`user_list.txt` ファイルには、以下のフォーマットでユーザー情報を記載します。
+
+```plaintext
+<ユーザー名>:<パスワード>::::<ホームディレクトリ>:/bin/bash
+```
+
+##### ユーザーリストの例
+```plaintext
+user1:c5VGXTrh::::/home/rstudio/users/user1:/bin/bash
+user2:Hg8P5FsL::::/home/rstudio/users/user2:/bin/bash
+user3:n5WeQpf6::::/home/rstudio/users/user3:/bin/bash
+user4:x2E5TSXP::::/home/rstudio/users/user4:/bin/bash
+user5:wE7jNKfp::::/home/rstudio/users/user5:/bin/bash
+```
+
+各ユーザーのユーザー名とパスワードは一意である必要があり、適切なホームディレクトリを指定してください。
+
+#### 注意事項
+- `newusers` コマンドは `user_list.txt` から一括でユーザーを作成します。
+- 各ユーザーのホームディレクトリを明示的に指定し、重複を避けてください。
+- パスワードの管理には注意し、公開リポジトリに直接記載しないようにしてください。
+
+この設定を行うことで、複数のユーザーがそれぞれのアカウントを使用して RStudio Server を利用できるようになります。
+
